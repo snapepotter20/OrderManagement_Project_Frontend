@@ -8,6 +8,7 @@ import { CreateInventoryTransactionComponent } from '../create-inventory-transac
 import { ViewInventoryTransactionsComponent } from '../view-inventory-transactions/view-inventory-transactions.component';
 import { ViewAllProductsComponent } from '../view-all-products/view-all-products.component';
 import { TabService } from '../../services/InventoryServices/tab.service';
+import { ProfileComponent } from "../profile/profile.component";
 
 @Component({
   selector: 'app-inventorydashboard',
@@ -18,7 +19,8 @@ import { TabService } from '../../services/InventoryServices/tab.service';
     CreateInventoryTransactionComponent,
     ViewInventoryTransactionsComponent,
     ViewAllProductsComponent,
-  ],
+    ProfileComponent
+],
   templateUrl: './inventorydashboard.component.html',
   styleUrl: './inventorydashboard.component.css',
 })
