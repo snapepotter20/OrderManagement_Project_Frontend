@@ -1,0 +1,39 @@
+<div class="bg-white p-6 rounded-lg shadow-md max-w-3xl mx-auto mt-6">
+  <h2 class="text-2xl font-semibold text-gray-800 mb-4">Create Purchase Order</h2>
+
+  <form [formGroup]="orderForm" (ngSubmit)="submitOrder()">
+    <div class="grid grid-cols-2 gap-4 mb-4">
+      <div>
+        <label class="block text-gray-700">Order Date</label>
+        <input type="date" formControlName="orderDate" class="w-full border border-gray-300 rounded px-3 py-2" />
+      </div>
+      <div>
+        <label class="block text-gray-700">Expected Delivery</label>
+        <input type="date" formControlName="expectedDelivery" class="w-full border border-gray-300 rounded px-3 py-2" />
+      </div>
+    </div>
+
+    <div class="mb-4">
+      <label class="block text-gray-700">Delivery Status</label>
+      <input type="text" formControlName="deliveryStatus" class="w-full border border-gray-300 rounded px-3 py-2" readonly />
+    </div>
+
+    <h3 class="text-lg font-medium mb-2">Order Items</h3>
+    <div formArrayName="items" class="space-y-4 mb-4">
+      <div *ngFor="let item of items.controls; let i = index" [formGroupName]="i" class="grid grid-cols-4 gap-4 items-center">
+        <input type="text" formControlName="productId" placeholder="Product ID" class="border px-2 py-2 rounded w-full" />
+        <input type="number" formControlName="quantity" placeholder="Quantity" class="border px-2 py-2 rounded w-full" />
+        <input type="number" formControlName="cost" placeholder="Cost" class="border px-2 py-2 rounded w-full" />
+        <button type="button" (click)="removeItem(i)" class="text-red-600 hover:text-red-800">🗑️ Remove</button>
+      </div>
+    </div>
+
+    <button type="button" (click)="addItem()" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded mb-4">
+      ➕ Add Item
+    </button>
+
+    <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+      ✅ Submit Order
+    </button>
+  </form>
+</div>
