@@ -10,7 +10,7 @@
         <input
           type="number"
           formControlName="userId"
-          class="w-full border border-gray-300 px-4 py-2 rounded-md"
+          class="w-full border px-4 py-2 rounded-md"
         />
       </div>
       <div>
@@ -18,7 +18,7 @@
         <input
           type="date"
           formControlName="transactionDate"
-          class="w-full border border-gray-300 px-4 py-2 rounded-md"
+          class="w-full border px-4 py-2 rounded-md"
         />
       </div>
 
@@ -26,7 +26,7 @@
         <label class="font-medium">Transaction Type</label>
         <select
           formControlName="transactionType"
-          class="w-full border border-gray-300 px-4 py-2 rounded-md"
+          class="w-full border px-4 py-2 rounded-md"
         >
           <option value="IN">IN</option>
           <option value="OUT">OUT</option>
@@ -34,20 +34,21 @@
       </div>
 
       <div>
-        <label class="font-medium">Quantity</label>
+        <label class="font-medium">Total Quantity</label>
         <input
           type="number"
           formControlName="quantity"
-          class="w-full border border-gray-300 px-4 py-2 rounded-md"
+          readonly
+          class="w-full bg-gray-100 px-4 py-2 rounded-md"
         />
       </div>
 
-      <div>
+      <div class="sm:col-span-2">
         <label class="font-medium">Reference</label>
         <input
           type="text"
           formControlName="reference"
-          class="w-full border border-gray-300 px-4 py-2 rounded-md"
+          class="w-full border px-4 py-2 rounded-md"
         />
       </div>
     </div>
@@ -55,10 +56,10 @@
     <div class="mt-6">
       <label class="font-medium block mb-2">Select Products</label>
       <div
-        class="grid grid-cols-2 sm:grid-cols-3 gap-4 max-h-48 overflow-y-auto border p-4 rounded-md"
+        class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-h-64 overflow-y-auto border p-4 rounded-md"
       >
         <div *ngFor="let product of allProducts">
-          <label class="inline-flex items-center space-x-2">
+          <label class="block text-sm">
             <input
               type="checkbox"
               (change)="
@@ -68,31 +69,46 @@
                   $event
                 )
               "
-              class="text-blue-500"
             />
-            <span>{{ product.productName }}</span>
+            {{ product.productName }}
           </label>
         </div>
+      </div>
+
+      <div
+        *ngFor="let ctrl of products.controls; let i = index"
+        [formGroup]="ctrl"
+        class="flex gap-4 items-center mb-2"
+      >
+        <span class="w-1/2 font-medium">{{
+          ctrl.get("productName")?.value
+        }}</span>
+        <input
+          type="number"
+          min="1"
+          formControlName="transactionQuantity"
+          class="border px-3 py-1 rounded-md w-1/2"
+          (input)="updateTotalQuantity()"
+        />
       </div>
     </div>
 
     <div class="mt-6 flex space-x-4">
       <button
         type="submit"
-        class="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition"
+        class="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700"
       >
         Submit
       </button>
       <button
         type="reset"
-        class="bg-gray-300 text-gray-800 px-6 py-2 rounded-md hover:bg-gray-400 transition"
         (click)="transactionForm.reset(); products.clear()"
+        class="bg-gray-300 text-gray-800 px-6 py-2 rounded-md hover:bg-gray-400"
       >
         Clear
       </button>
     </div>
 
-    <!-- Messages -->
     <div *ngIf="successMessage" class="text-green-600 mt-4">
       {{ successMessage }}
     </div>

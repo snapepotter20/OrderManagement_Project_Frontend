@@ -9,12 +9,14 @@ export interface InventoryTransaction {
   transactionType: string;
   quantity: number;
   reference: string;
-  products: { productId: number,productName: String }[];
+  products: {
+    productId: number;
+    productName?: string;
+    transactionQuantity: number;
+  }[];
 }
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class InventoryService {
   private BASE_URL = 'http://localhost:8093/api/inventorytransactions';
 
@@ -28,3 +30,4 @@ export class InventoryService {
     return this.http.get<InventoryTransaction[]>(`${this.BASE_URL}/all`);
   }
 }
+
