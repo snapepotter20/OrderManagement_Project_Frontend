@@ -27,12 +27,16 @@ import { ProfileComponent } from "../profile/profile.component";
 export class InventorydashboardComponent implements OnInit {
   selectedTab: 'create' | 'view' | 'products' | 'profile' = 'create';
 
-  constructor(private tabService: TabService, private cdr: ChangeDetectorRef) {}
+  constructor(private tabService: TabService, private cdr: ChangeDetectorRef,private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
     this.tabService.selectedTab$.subscribe((tab) => {
       this.selectedTab = tab as any;
       this.cdr.detectChanges(); 
     });
+  }
+    Logout(): any {
+    this.authService.logout();
+    this.router.navigateByUrl('/');
   }
 }

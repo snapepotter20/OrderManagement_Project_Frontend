@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute, RouterModule,Router } from '@angular/router';
+import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { ProcurementService } from '../../services/procurement.service';
 
 @Component({
@@ -11,10 +11,16 @@ import { ProcurementService } from '../../services/procurement.service';
   styleUrl: './track-order.component.css',
 })
 export class TrackOrderComponent {
-    orderId: number = 0;
+  orderId: number = 0;
   orderDetails: any;
   trackingDetails: any;
-  trackingStages = ['Ordered', 'Packed', 'Dispatched', 'Out for Delivery', 'Delivered'];
+  trackingStages = [
+    'Ordered',
+    // 'Packed',
+    'Dispatched',
+    'Out for Delivery',
+    // 'Delivered',
+  ];
   currentStepIndex = 0;
 
   constructor(
@@ -34,21 +40,53 @@ export class TrackOrderComponent {
       error: () => alert('Failed to fetch order details'),
     });
 
-    this.procurementService.getDeliveryTrackingByOrderId(this.orderId).subscribe({
-      next: (res: any) => {
-        this.trackingDetails = res;
-        this.setTrackingStageFromStatus(res.status); // update stage based on tracking status
-      },
-      error: () => console.warn('No tracking data found'),
-    });
+    this.procurementService
+      .getDeliveryTrackingByOrderId(this.orderId)
+      .subscribe({
+        next: (res: any) => {
+          this.trackingDetails = res;
+          this.setTrackingStageFromStatus(res.status); // update stage based on tracking status
+        },
+        error: () => console.warn('No tracking data found'),
+      });
   }
 
+  // setTrackingStageFromStatus(status: string) {
+  //   const index = this.trackingStages.findIndex(stage => stage.toLowerCase() === status.toLowerCase());
+  //   this.currentStepIndex = index >= 0 ? index : 0;
+  // }
+
   setTrackingStageFromStatus(status: string) {
-    const index = this.trackingStages.findIndex(stage => stage.toLowerCase() === status.toLowerCase());
-    this.currentStepIndex = index >= 0 ? index : 0;
+    const statusMap: { [key: string]: number } = {
+      PENDING: 0, // corresponds to "Ordered"
+      DISPATCHED: 2, // corresponds to "Dispatched"
+      DELIVERED: 4, // corresponds to "Delivered"
+    };
+
+    this.currentStepIndex = statusMap[status.toUpperCase()] ?? 0;
   }
 
   goBack() {
     this.router.navigate(['/procurement-dashboard']);
+  }
+
+  downloadInvoicePdf(): void {
+    if (!this.orderId) return;
+
+    this.procurementService.downloadInvoice(this.orderId).subscribe({
+      next: (fileData) => {
+        const blob = new Blob([fileData], { type: 'application/pdf' });
+        const url = window.URL.createObjectURL(blob);
+
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `invoice_order_${this.orderId}.pdf`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+      },
+      error: () => alert('❌ Failed to download invoice'),
+    });
   }
 }
