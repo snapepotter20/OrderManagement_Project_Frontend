@@ -61,4 +61,17 @@ export class ProcurementService {
       { headers, responseType: 'blob' } // important for file downloads
     );
   }
+
+  updateOrderStatus(orderId: number, status: string, otp?: string): Observable<any> {
+  const headers = this.getAuthHeaders();
+  const params = new HttpParams()
+    .set('status', status)
+    .set('otp', otp || '');
+
+  return this.http.put(`${this.BASE_URL}/update-status/${orderId}`, null, {
+    headers,
+    params,
+  });
+}
+
 }

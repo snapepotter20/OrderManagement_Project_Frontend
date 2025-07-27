@@ -40,6 +40,28 @@
         </div>
 
         <div
+          (click)="selectedTab = 'requestedorders'"
+          class="flex items-center gap-3 p-3 rounded-lg cursor-pointer transition duration-200 hover:bg-blue-700"
+          [ngClass]="{
+            'bg-white text-blue-800 font-semibold shadow-md':
+              selectedTab === 'requestedorders'
+          }"
+        >
+          👤 <span>Requested Orders</span>
+        </div>
+
+        <div
+          (click)="selectedTab = 'completedorders'"
+          class="flex items-center gap-3 p-3 rounded-lg cursor-pointer transition duration-200 hover:bg-blue-700"
+          [ngClass]="{
+            'bg-white text-blue-800 font-semibold shadow-md':
+              selectedTab === 'completedorders'
+          }"
+        >
+          👤 <span>Completed Orders</span>
+        </div>
+
+        <div
           (click)="selectedTab = 'profile'"
           class="flex items-center gap-3 p-3 rounded-lg cursor-pointer transition duration-200 hover:bg-blue-700"
           [ngClass]="{
@@ -71,5 +93,7 @@
     ></app-create-inventory-transaction>
     <app-view-all-products *ngIf="selectedTab === 'products'"></app-view-all-products>
     <app-profile *ngIf="selectedTab === 'profile'"></app-profile>
+    <app-view-requested-orders-component *ngIf="selectedTab === 'requestedorders'"></app-view-requested-orders-component>
+    <app-view-completed-orders-component *ngIf="selectedTab === 'completedorders'"></app-view-completed-orders-component>
   </main>
 </div>

@@ -9,6 +9,8 @@ import { ViewInventoryTransactionsComponent } from '../view-inventory-transactio
 import { ViewAllProductsComponent } from '../view-all-products/view-all-products.component';
 import { TabService } from '../../services/InventoryServices/tab.service';
 import { ProfileComponent } from "../profile/profile.component";
+import { ViewCompletedOrdersComponent} from '../view-completed-orders-component/view-completed-orders-component.component';
+import { ViewRequestedOrdersComponent } from '../view-requested-orders-component/view-requested-orders-component.component';
 
 @Component({
   selector: 'app-inventorydashboard',
@@ -19,13 +21,15 @@ import { ProfileComponent } from "../profile/profile.component";
     CreateInventoryTransactionComponent,
     ViewInventoryTransactionsComponent,
     ViewAllProductsComponent,
-    ProfileComponent
+    ProfileComponent,
+    ViewCompletedOrdersComponent,
+    ViewRequestedOrdersComponent
 ],
   templateUrl: './inventorydashboard.component.html',
   styleUrl: './inventorydashboard.component.css',
 })
 export class InventorydashboardComponent implements OnInit {
-  selectedTab: 'create' | 'view' | 'products' | 'profile' = 'create';
+  selectedTab: 'create' | 'view' | 'products' | 'profile' | 'requestedorders' | 'completedorders' = 'create';
 
   constructor(private tabService: TabService, private cdr: ChangeDetectorRef,private authService: AuthService, private router: Router) {}
 

@@ -1,0 +1,69 @@
+<div class="p-8 max-w-6xl mx-auto bg-white rounded-2xl shadow-xl">
+  <h2 class="text-3xl font-semibold text-gray-800 mb-6 border-b pb-2">
+    Completed Orders
+  </h2>
+
+  <div
+    *ngIf="isLoading"
+    class="text-blue-600 text-center text-lg mb-4 animate-pulse"
+  >
+    Loading completed orders...
+  </div>
+
+  <div
+    *ngIf="errorMessage"
+    class="text-red-500 text-center text-md font-medium mb-4"
+  >
+    {{ errorMessage }}
+  </div>
+
+  <div *ngIf="!isLoading && completedOrders.length > 0">
+    <table
+      class="min-w-full divide-y divide-gray-200 shadow-sm rounded-md overflow-hidden"
+    >
+      <thead class="bg-gray-50 text-gray-700 text-sm uppercase tracking-wider">
+        <tr>
+          <th class="px-6 py-3 text-left">Order ID</th>
+          <th class="px-6 py-3 text-left">Date</th>
+          <th class="px-6 py-3 text-left">Status</th>
+          <th class="px-6 py-3 text-left">Actions</th>
+        </tr>
+      </thead>
+      <tbody class="bg-white divide-y divide-gray-100">
+        <tr
+          *ngFor="let order of completedOrders"
+          class="hover:bg-gray-50 transition duration-200"
+        >
+          <td class="px-6 py-4 whitespace-nowrap text-gray-800 font-medium">
+            {{ order.purchaseOrderId }}
+          </td>
+          <td class="px-6 py-4 text-gray-600">
+            {{ order.orderDate | date : "mediumDate" }}
+          </td>
+          <td class="px-6 py-4">
+            <span
+              class="inline-block px-3 py-1 text-sm rounded-full bg-green-100 text-green-700 font-semibold"
+            >
+              {{ order.deliveryStatus }}
+            </span>
+          </td>
+          <td class="px-6 py-4">
+            <button
+              (click)="downloadInvoicePdf(order.purchaseOrderId)"
+              class="px-4 py-2 text-sm font-medium text-indigo-600 hover:text-white border border-indigo-500 hover:bg-indigo-600 rounded-lg transition duration-200"
+            >
+              Download Invoice
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div
+    *ngIf="!isLoading && completedOrders.length === 0"
+    class="text-gray-500 text-center text-md mt-6"
+  >
+    No completed orders found.
+  </div>
+</div>
